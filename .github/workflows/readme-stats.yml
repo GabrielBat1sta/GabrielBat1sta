@@ -2,9 +2,8 @@ name: GitHub Readme Stats Generator
 
 on:
   schedule:
-    # Roda automaticamente a cada 12 horas
     - cron: '0 */12 * * *'
-  workflow_dispatch: # Permite rodar manualmente sempre que quiser
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,18 +12,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Utiliza uma action comunitária para gerar os SVGs locais
       - name: Generate Github Readme Stats
         uses: teoxoy/profile-readme-stats@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          output: dist
-          # Opcional: configure o que deseja exibir (true/false)
-          include_all_commits: true
-          count_private_commits: true
+          # Força a action a gerar apenas as imagens soltas na pasta dist
+          # sem tentar injetar dentro de um arquivo TEMPLATE.md
+          template: "" 
 
       - name: Deploy to Repo
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
