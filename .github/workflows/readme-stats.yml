@@ -12,18 +12,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # Usando a action oficial do github-readme-stats adaptada para salvar localmente
       - name: Generate Github Readme Stats
-        uses: teoxoy/profile-readme-stats@v2
+        uses: anuraghazra/github-readme-stats-github-action@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          # Força a action a gerar apenas as imagens soltas na pasta dist
-          # sem tentar injetar dentro de um arquivo TEMPLATE.md
-          template: "" 
+          # Altere para true se quiser incluir seus commits em repositórios privados
+          count_private_commits: true 
 
       - name: Deploy to Repo
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./github-readme-stats
           publish_branch: output
           force_orphan: true
